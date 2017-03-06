@@ -17,9 +17,7 @@
         <testng.version>6.8</testng.version>
         <selenium.version>3.0.1</selenium.version>
         <compiler.version>1.7</compiler.version>
-
     </properties>
-
 
     <build>
         <plugins>

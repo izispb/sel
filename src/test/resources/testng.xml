@@ -2,24 +2,29 @@
 
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="TestSuite" thread-count="3" >
+<suite name="MySuite" verbose="1">
+    <parameter name="browser" value="chrome" />
+    <test name="beforeTest">
+    <classes>
+        <class name="suite.Sber">
+            <methods>
+                <include name="beforeTest" />
+            </methods>
+        </class>
+    </classes>
+</test>
 
-    <parameter name="author" value="Guru99" />
-
-    <parameter name="searchKey" value="India" />
-
-    <test name="testGuru">
-
-        <parameter name="searchKey" value="UK" />
-
+    <test name="test1">
+        <parameter name="summ" value="500" />
+        <parameter name="bing" value="8,34" />
         <classes>
-
             <class name="suite.Sber">
-
+                <methods>
+                    <include name="test1" />
+                </methods>
             </class>
-
         </classes>
-
     </test>
 
 </suite>
+

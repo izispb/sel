@@ -18,6 +18,7 @@ public class Sber {
 
     WebDriver sberDriver;
 
+    //старт
     @BeforeSuite
     @Parameters({"browser"})
     public void beforeTest(String browser) {
@@ -27,11 +28,10 @@ public class Sber {
         assertEquals(sberDriver.getTitle(), "«Сбербанк» - Калькулятор иностранных валют");
     }
 
+    //конвертация
     @Test
     @Parameters({"summ", "bing"})
-    public void test1(String summ, String bing) throws InterruptedException {
-
-        //input[@placeholder="Сумма"]
+    public void test1(String summ, String bing) {
 
         WebElement placeholder = sberDriver.findElement(By.xpath("//input[@placeholder='Сумма']"));
         while (!StringUtils.isEmpty(placeholder.getAttribute("value"))) {
@@ -55,17 +55,12 @@ public class Sber {
         button.click();
 
         WebElement bingo = sberDriver.findElement(By.xpath("//div[@class='converter-result']/h4/span"));
-
-//input[@name='converterDateSelect']/following-sibling::p[.='Выбрать']/preceding-sibling::span[@class='radio']
-
-        Thread.sleep(3000);
-
         Assert.assertTrue(bingo.getText().equalsIgnoreCase(bing));
         System.out.println("bingo = " + bingo.getText() );
 
-
     }
 
+    //завершение
     @AfterSuite
     public void stopBrowser() {
         sberDriver.quit();

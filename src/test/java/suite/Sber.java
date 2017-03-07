@@ -30,9 +30,9 @@ public class Sber {
     }
 
     //конвертация
-    @Test(enabled = false)
+    @Test
     @Parameters({"summ", "day", "bing"})
-    public void test1(String summ, String day, String bing) {
+    public void prameterTestOne(String summ, String day, String bing) {
 
         WebElement placeholder = sberDriver.findElement(By.xpath("//input[@placeholder='Сумма']"));
         while (!StringUtils.isEmpty(placeholder.getAttribute("value"))) {
@@ -62,7 +62,7 @@ public class Sber {
 
     @Test
     @Parameters({ "date", "buy", "sell"})
-    public void test2(String date, String buy, String sell) {
+    public void prameterTestTwo(String date, String buy, String sell) {
 
         WebElement extTab = sberDriver.findElement(By.xpath("//span[.='Расширенная таблица курсов']"));
         extTab.click();

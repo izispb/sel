@@ -14,12 +14,12 @@
                     <parameter name="summ" value="500"/>
                     <parameter name="day" value="5"/>
                     <parameter name="bing" value="8,28"/>
-                    <include name="test1" />
+                    <include name="prameterTestOne" />
 
                     <parameter name="date" value="05.03.2017"/>
                     <parameter name="buy" value="57,71"/>
                     <parameter name="sell" value="59,89"/>
-                    <include name="test2" />
+                    <include name="prameterTestTwo" />
 
                 </methods>
             </class>

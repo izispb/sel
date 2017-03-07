@@ -1,13 +1,11 @@
 package suite;
 
-import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Ignore;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -30,8 +28,8 @@ public class Sber {
 
     //конвертация
     @Test
-    @Parameters({"summ", "bing"})
-    public void test1(String summ, String bing) {
+    @Parameters({"summ", "day", "bing"})
+    public void test1(String summ, String day, String bing) {
 
         WebElement placeholder = sberDriver.findElement(By.xpath("//input[@placeholder='Сумма']"));
         while (!StringUtils.isEmpty(placeholder.getAttribute("value"))) {
@@ -45,16 +43,16 @@ public class Sber {
         WebElement kalend = sberDriver.findElement(By.xpath("//div[@class='filter-block']/div[@class='filter-datepicker input']/span[@class='filter-datepicker-trigger']"));
         kalend.click();
 
-        WebElement number6 = sberDriver.findElement(By.xpath("//a[contains (@class, 'ui-state-default ui-state-highlight ui-state-active') and .='6']"));
-        number6.click();
+        WebElement day5 = sberDriver.findElement(By.xpath(String.format("//a[contains (@class, 'ui-state-default') and .='%s']", day)));
+        day5.click();
 
-        WebElement number6ok = sberDriver.findElement(By.xpath("//span[.='Выбрать']"));
-        number6ok.click();
+        WebElement day5ok = sberDriver.findElement(By.xpath("//span[.='Выбрать']"));
+        day5ok.click();
 
         WebElement button = sberDriver.findElement(By.xpath("//button[.='Показать']"));
         button.click();
 
-        WebElement bingo = sberDriver.findElement(By.xpath("//div[@class='converter-result']/h4/span"));
+        WebElement bingo = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='converter-result']/h4/span")));
         Assert.assertTrue(bingo.getText().equalsIgnoreCase(bing));
         System.out.println("bingo = " + bingo.getText() );
 
@@ -63,7 +61,7 @@ public class Sber {
     //завершение
     @AfterSuite
     public void stopBrowser() {
-        sberDriver.quit();
+        MyWebDriver.quitBrowser();
     }
 
     // TODO..

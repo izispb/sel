@@ -16,7 +16,8 @@
 
     <test name="test1">
         <parameter name="summ" value="500" />
-        <parameter name="bing" value="8,34" />
+        <parameter name="day" value="5" />
+        <parameter name="bing" value="8,28" />
         <classes>
             <class name="suite.Sber">
                 <methods>

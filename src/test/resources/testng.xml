@@ -27,5 +27,18 @@
         </classes>
     </test>
 
+    <test name="test2">
+        <parameter name="date" value="05.03.2017" />
+        <parameter name="buy" value="57,71" />
+        <parameter name="sell" value="59,89" />
+        <classes>
+            <class name="suite.Sber">
+                <methods>
+                    <include name="test2" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+
 </suite>
 

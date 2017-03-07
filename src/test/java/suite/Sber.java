@@ -8,7 +8,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import java.lang.String;
+import javax.swing.*;
 
+import static org.apache.commons.lang3.StringUtils.indexOf;
 import static org.testng.Assert.assertEquals;
 
 
@@ -27,7 +30,7 @@ public class Sber {
     }
 
     //конвертация
-    @Test
+    @Test(enabled = false)
     @Parameters({"summ", "day", "bing"})
     public void test1(String summ, String day, String bing) {
 
@@ -54,13 +57,42 @@ public class Sber {
 
         WebElement bingo = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='converter-result']/h4/span")));
         Assert.assertTrue(bingo.getText().equalsIgnoreCase(bing));
-        System.out.println("bingo = " + bingo.getText() );
+        System.out.println("bingo = " + bingo.getText());
+    }
+
+    @Test
+    @Parameters({ "date", "buy", "sell"})
+    public void test2(String date, String buy, String sell) {
+
+        WebElement extTab = sberDriver.findElement(By.xpath("//span[.='Расширенная таблица курсов']"));
+        extTab.click();
+
+        new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='rates-details']")));
+
+        WebElement kalend = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@name='filter-datepicker-detailed']")));
+        kalend.clear();
+        kalend.sendKeys(date);
+        extTab.click();
+
+        new WebDriverWait(sberDriver, 5).until(ExpectedConditions.not(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='ui-datepicker-div']"))));
+
+        WebElement button = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.elementToBeClickable(By.xpath("//button[.='Показать']")));
+        button.click();
+
+        WebElement buyVal = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@class='details-table']/tbody/tr/td[4]/span")));
+        Assert.assertTrue(((String) buyVal.getText().subSequence(0, indexOf(buyVal.getText(), " "))).equalsIgnoreCase(buy));
+
+        buyVal = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@class='details-table']/tbody/tr/td[5]/span")));
+        Assert.assertTrue(((String) buyVal.getText().subSequence(0, indexOf(buyVal.getText(), " "))).equalsIgnoreCase(sell));
 
     }
 
     //завершение
     @AfterSuite
     public void stopBrowser() {
+
+        JOptionPane.showMessageDialog(null, "Всё ОК ??"); //пауза!
+
         MyWebDriver.quitBrowser();
     }
 

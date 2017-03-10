@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -32,7 +33,7 @@ public class Sber {
     //конвертация
     @Test
     @Parameters({"summ", "day", "bing"})
-    public void prameterTestOne(String summ, String day, String bing) {
+    public void parameterTestOne(String summ, String day, String bing) {
 
         WebElement placeholder = sberDriver.findElement(By.xpath("//input[@placeholder='Сумма']"));
         while (!StringUtils.isEmpty(placeholder.getAttribute("value"))) {
@@ -62,12 +63,12 @@ public class Sber {
 
     @Test
     @Parameters({ "date", "buy", "sell"})
-    public void prameterTestTwo(String date, String buy, String sell) {
+    public void parameterTestTwo(String date, String buy, String sell) {
 
         WebElement extTab = sberDriver.findElement(By.xpath("//span[.='Расширенная таблица курсов']"));
         extTab.click();
 
-        new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='rates-details']")));
+        new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='rates-details-table']")));
 
         WebElement kalend = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@name='filter-datepicker-detailed']")));
         kalend.clear();
@@ -86,6 +87,32 @@ public class Sber {
         Assert.assertTrue(((String) buyVal.getText().subSequence(0, indexOf(buyVal.getText(), " "))).equalsIgnoreCase(sell));
 
     }
+
+    @Test
+    @Parameters({ "city"})
+    public void parameterTestTree(String city) {
+
+        WebElement oneTab = sberDriver.findElement(By.xpath("//span[.='Динамика изменения курсов']"));
+        oneTab.click();
+
+        new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='rates-details-graphs']")));
+
+        WebElement cityEl = sberDriver.findElement(By.xpath("//span[@class='region-list__name']"));
+        if (cityEl.getText() != city) {
+            sberDriver.findElement(By.xpath("//span[@class='region-list__name']")).click();
+            cityEl = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//a[contains(@class, 'region-list__link') and .='%s']", city))));
+            cityEl.click();
+        }
+
+
+
+        //TODO для проверки всплывающих подсказок
+        //Actions actions = new Actions(sberDriver);
+        //actions.moveToElement(cityEl).build().perform();
+
+    }
+
+
 
     //завершение
     @AfterSuite

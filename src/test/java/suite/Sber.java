@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import java.lang.String;
+import java.util.List;
 import javax.swing.*;
 
 import static org.apache.commons.lang3.StringUtils.indexOf;
@@ -103,13 +104,26 @@ public class Sber {
             cityEl = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//a[contains(@class, 'region-list__link') and .='%s']", city))));
             cityEl.click();
         }
+        cityEl = new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='region-list__name']")));
+        Assert.assertTrue(cityEl.getText().equalsIgnoreCase(city));
 
+        List<WebElement> filterBlock = sberDriver.findElements(By.xpath("//span/preceding-sibling::h6"));
+        String paramText;
 
+        for (WebElement fb : filterBlock) {
+            paramText = "Выберите " + fb.getText().toLowerCase();
 
-        //TODO для проверки всплывающих подсказок
-        //Actions actions = new Actions(sberDriver);
-        //actions.moveToElement(cityEl).build().perform();
+            Actions actions = new Actions(sberDriver);
+            actions.moveToElement(fb.findElement(By.xpath("./following-sibling::span/span")));
+            actions.build().perform();
+            new WebDriverWait(sberDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//div[contains(@class, 'sbr-tooltip-tooltip') and .='%s']", paramText))));
 
+            System.out.println(paramText);
+
+        }
+
+//span[contains(@class, 'sbr-tooltip-icon')]
+        //span/preceding-sibling::h6
     }
 
 
